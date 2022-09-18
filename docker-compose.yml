@@ -1,32 +1,62 @@
 version: "3.9"
 
 services:
-  # INITIALIZE PJ
-  # Run "PJ_NAME=XXXXX docker-compose up --build" at parent of the project folder
-  nextjs-init:
-    platform: linux/amd64 # for M1 chip
-    image: node:16.13.2
-    volumes:
-      - ./${PJ_NAME}:/usr/src/${PJ_NAME}
-    # command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app ${PJ_NAME}"
-    command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app --typescript ${PJ_NAME}"
-      
-  # nextjs:
+  # # INITIALIZE PJ
+  # # Run "PJ_NAME=XXXXX docker-compose up --build" at parent of the project folder
+  # nextjs-init:
   #   platform: linux/amd64 # for M1 chip
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile 
-  #   image: ${PJ_NAME}_nextjs
+  #   image: node:16.13.2
   #   volumes:
-  #     - .:/usr/src/${PJ_NAME}
-  #   command: bash -c "yarn dev"
-  #   ports:
-  #     - 3000:3000 # nextjs
+  #     - ./${PJ_NAME}:/usr/src/${PJ_NAME}
+  #   # command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app ${PJ_NAME}"
+  #   command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app --typescript ${PJ_NAME}"
+      
+  nextjs:
+    platform: linux/amd64 # for M1 chip
+    build:
+      context: .
+      dockerfile: ./Dockerfile 
+    image: mysql_prisma_nextjs
+    volumes:
+      - .:/usr/src/app
+    command: bash -c "yarn dev"
+    ports:
+      - 3000:3000 # nextjs
+    networks:
+      - mysql_prisma
+
+  
+  mysql:
+    image: 'mysql:8.0'
+    command: '--default-authentication-plugin=mysql_native_password'
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-docker}'
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: '${DB_DATABASE:-dev}'
+      MYSQL_USER: '${DB_USERNAME:-docker}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-docker}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'mysqldb:/var/lib/mysql'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD:-docker}"]
+      retries: 3
+      timeout: 5s
+    networks:
+      - mysql_prisma
+
+networks:
+  mysql_prisma:
+
+volumes:
+  mysqldb:
 
   # studio:
   #   image: ${PJ_NAME}_nextjs
   #   volumes:
-  #     - .:/usr/src/${PJ_NAME}
+  #     - .:/usr/src/app
   #   command: bash -c "npx prisma studio"
   #   ports:
   #     - 5555:5555 # prisma studio
