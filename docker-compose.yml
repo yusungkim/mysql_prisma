@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  # INITIALIZE PJ
+  # Run "PJ_NAME=XXXXX docker-compose up --build" at parent of the project folder
+  nextjs-init:
+    platform: linux/amd64 # for M1 chip
+    image: node:16.13.2
+    volumes:
+      - ./${PJ_NAME}:/usr/src/${PJ_NAME}
+    # command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app ${PJ_NAME}"
+    command: bash -c "mkdir -p /usr/src && cd /usr/src && npx create-next-app --typescript ${PJ_NAME}"
+      
+  # nextjs:
+  #   platform: linux/amd64 # for M1 chip
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile 
+  #   image: ${PJ_NAME}_nextjs
+  #   volumes:
+  #     - .:/usr/src/${PJ_NAME}
+  #   command: bash -c "yarn dev"
+  #   ports:
+  #     - 3000:3000 # nextjs
+
+  # studio:
+  #   image: ${PJ_NAME}_nextjs
+  #   volumes:
+  #     - .:/usr/src/${PJ_NAME}
+  #   command: bash -c "npx prisma studio"
+  #   ports:
+  #     - 5555:5555 # prisma studio
