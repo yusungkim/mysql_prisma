@@ -1,10 +1,11 @@
 import type { NextPage } from 'next'
+import { Layout } from '../components/Layout'
 
 const Home: NextPage = () => {
   return (
-    <>
-    <h1>Mysql</h1>
-    </>
+    <Layout>
+      <div className="bg-red-600">Mysql</div>
+    </Layout>
   )
 }
 
