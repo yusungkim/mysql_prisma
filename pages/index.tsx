@@ -1,12 +1,19 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
 import Layout from "@components/layout";
 
 const Home: NextPage = () => {
   return (
     <Layout>
-      <div className="text-slate-200">Mysql</div>
+      <>
+        <h2 className="text-lg">Initial template</h2>
+        <ul>
+          <li>Login Input UI</li>
+          <li>api for register & login</li>
+          <li></li>
+        </ul>
+      </>
     </Layout>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
