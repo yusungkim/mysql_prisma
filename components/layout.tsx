@@ -4,10 +4,8 @@ type LayoutProps = Required<{
   readonly children: ReactElement;
 }>;
 
-export const Layout = ({ children }: LayoutProps) => (
-  <>
-    <div>
-      {children}
-    </div>
-  </>
+const Layout = ({ children }: LayoutProps) => (
+  <div className="w-screen h-screen bg-slate-800 flex">{children}</div>
 );
+
+export default Layout;
