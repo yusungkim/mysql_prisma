@@ -24,7 +24,8 @@ services:
       - 3000:3000 # nextjs
     networks:
       - mysql_prisma
-
+    depends_on:
+      - mysql
   
   mysql:
     image: 'mysql:8.0'

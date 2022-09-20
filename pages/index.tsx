@@ -1,16 +1,29 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
     <Layout>
       <>
-        <h2 className="text-lg">Initial template</h2>
-        <ul>
-          <li>Login Input UI</li>
-          <li>api for register & login</li>
-          <li></li>
+        <h2 className="text-3xl font-bold p-5">Initial template</h2>
+        <ul className="text-lg px-10">
+          <li>Signin page UI</li>
+          <li>Login page UI</li>
+          <li>API: register</li>
+          <li>API: login</li>
+          <li>API: me (verify)</li>
+          <li>Register form</li>
+          <li>Login form</li>
+          <li>Login & Session</li>
+          <li>useUser</li>
         </ul>
+
+        <div>
+          <Link href="/signin">
+            Signin
+          </Link>
+        </div>
       </>
     </Layout>
   );
