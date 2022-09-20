@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <Layout>
+    <Layout haveMenu>
       <>
         <h2 className="text-3xl font-bold p-5">Initial template</h2>
         <ul className="text-lg px-10">
@@ -18,12 +18,6 @@ const Home: NextPage = () => {
           <li>Login & Session</li>
           <li>useUser</li>
         </ul>
-
-        <div>
-          <Link href="/signin">
-            Signin
-          </Link>
-        </div>
       </>
     </Layout>
   );
