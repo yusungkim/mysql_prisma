@@ -19,7 +19,7 @@ services:
     image: mysql_prisma_nextjs
     volumes:
       - .:/usr/src/app
-    command: bash -c "yarn dev"
+    command: bash -c "yarn && yarn dev"
     ports:
       - 3000:3000 # nextjs
     networks:

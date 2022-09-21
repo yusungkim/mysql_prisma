@@ -2,21 +2,21 @@ import type { NextPage } from "next";
 import Layout from "@components/layout";
 import Link from "next/link";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   return (
     <Layout haveMenu>
       <>
         <h2 className="text-3xl font-bold p-5">Initial template</h2>
         <ul className="text-lg px-10">
-          <li>Signin page UI</li>
-          <li>Login page UI</li>
-          <li>API: register</li>
-          <li>API: login</li>
-          <li>API: me (verify)</li>
-          <li>Register form</li>
-          <li>Login form</li>
-          <li>Login & Session</li>
-          <li>useUser</li>
+          <li><input type="checkbox" checked /> Signin page UI</li>
+          <li><input type="checkbox" checked /> Login page UI</li>
+          <li><input type="checkbox" checked /> API: signin</li>
+          <li><input type="checkbox" /> API: login</li>
+          <li><input type="checkbox" /> API: me (verify)</li>
+          <li><input type="checkbox" /> Register form</li>
+          <li><input type="checkbox" /> Login form</li>
+          <li><input type="checkbox" /> Login & Session</li>
+          <li><input type="checkbox" /> useUser</li>
         </ul>
       </>
     </Layout>
