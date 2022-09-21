@@ -3,10 +3,10 @@ import client from "@libs/server/client";
 import withMethodGuard from "@libs/server/withMethodGuard";
 import bcrypt from "bcrypt";
 
-type SigninResponse = {
+export type SigninResponse = {
   ok: boolean;
   message?: string;
-  userId?: string;
+  userId?: number;
 };
 
 async function handler(
@@ -30,7 +30,7 @@ async function handler(
     // Bad request. Already registered.
     res.status(400).json({ ok: false, message: "Cannot create user" });
   } else {
-    const saltRounds = Number.parseInt(process.env.PASSWORD_SALT_ROUND!) || 21;
+    const saltRounds = Number.parseInt(process.env.PASSWORD_SALT_ROUND || "10")
     const passwordHash = bcrypt.hashSync(password, saltRounds);
     console.log("process.env.PASSWORD_SALT_ROUND! ", saltRounds);
     console.log("passwordHash ", passwordHash);
@@ -41,7 +41,7 @@ async function handler(
       },
     });
     if (user) {
-      res.status(201).json({ ok: true, userId: user.id.toString() });
+      res.status(201).json({ ok: true, userId: user.id });
     } else {
       res.status(500).json({ ok: false, message: "Cannot create user." });
     }

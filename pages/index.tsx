@@ -8,13 +8,13 @@ const Home: NextPage = (props) => {
       <>
         <h2 className="text-3xl font-bold p-5">Initial template</h2>
         <ul className="text-lg px-10">
-          <li><input type="checkbox" checked /> Signin page UI</li>
-          <li><input type="checkbox" checked /> Login page UI</li>
-          <li><input type="checkbox" checked /> API: signin</li>
-          <li><input type="checkbox" /> API: login</li>
+          <li><input type="checkbox" defaultChecked /> Signin page UI</li>
+          <li><input type="checkbox" defaultChecked /> Login page UI</li>
+          <li><input type="checkbox" defaultChecked /> API: signin</li>
+          <li><input type="checkbox" defaultChecked /> API: login</li>
           <li><input type="checkbox" /> API: me (verify)</li>
-          <li><input type="checkbox" /> Register form</li>
-          <li><input type="checkbox" /> Login form</li>
+          <li><input type="checkbox" defaultChecked /> Register form</li>
+          <li><input type="checkbox" defaultChecked /> Login form</li>
           <li><input type="checkbox" /> Login & Session</li>
           <li><input type="checkbox" /> useUser</li>
         </ul>

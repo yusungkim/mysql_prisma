@@ -1,21 +1,36 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
 import { useForm } from "react-hook-form";
+import { LoginResponse } from "@api/users/login";
+import useMutation from "@libs/client/useMutation";
+import { useEffect } from "react";
 
 interface LoginFormData {
-  nickname?: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  agreement: boolean;
 }
 
-const Login: NextPage = () => {
+const Login: NextPage = (props) => {
   const { handleSubmit, register } = useForm<LoginFormData>();
+  const [mutator, { data, loading, error }] = useMutation<
+    LoginFormData,
+    LoginResponse
+  >("/api/users/login");
 
   const onValid = (formData: LoginFormData) => {
-    console.log(formData);
+    if (!loading) {
+      mutator(formData);
+    }
   };
+
+  useEffect(() => {
+    if (data && data.ok) {
+      console.log("User logged in ", data.userId);
+    }
+  }, [data]);
+
+  console.log("data: ", data);
+  console.log("error: ", error);
 
   return (
     <Layout canGoBack>
@@ -23,7 +38,10 @@ const Login: NextPage = () => {
         <h2 className="text-3xl font-bold p-5">Login</h2>
 
         <div className="flex justify-center items-center h-full">
-          <form onSubmit={handleSubmit(onValid)} className="w-1/2 border-2 border-slate-300 border-opacity-20 bg-slate-400 bg-opacity-20 p-10 rounded-md">
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="w-1/2 border-2 border-slate-300 border-opacity-20 bg-slate-400 bg-opacity-20 p-10 rounded-md"
+          >
             <div className="mb-6">
               <label
                 htmlFor="email"
@@ -56,12 +74,17 @@ const Login: NextPage = () => {
                 required
               />
             </div>
-            <button
-              type="submit"
-              className="mt-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Login
-            </button>
+            <div className="mt-10">
+              {data && !data.ok && data.message && (
+                <p className="text-red-500 text-center">{data.message}</p>
+              )}
+              <button
+                type="submit"
+                className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                {loading ? "Submitting ..." : "Login"}
+              </button>
+            </div>
           </form>
         </div>
       </>

@@ -1,6 +1,9 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
 import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/useMutation";
+import { SigninResponse } from "@api/users/signin";
+import { useEffect } from "react";
 
 interface SigninFormData {
   nickname?: string;
@@ -10,12 +13,39 @@ interface SigninFormData {
   agreement: boolean;
 }
 
-const Signin: NextPage = () => {
-  const { handleSubmit, register } = useForm<SigninFormData>();
+const Signin: NextPage = (props) => {
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors: formErrors },
+  } = useForm<SigninFormData>();
+  const [signin, { data, loading }] = useMutation<
+    SigninFormData,
+    SigninResponse
+  >("/api/users/signin");
 
   const onValid = (formData: SigninFormData) => {
-    console.log(formData);
+    if (!formData.agreement) {
+      setError("agreement", {
+        message: "Please agree to the terms and conditions",
+      });
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("password", {
+        message: "Passwords do not match.",
+      });
+    }
+    if (!loading) {
+      signin(formData);
+    }
   };
+
+  useEffect(() => {
+    if (data && data.ok) {
+      console.log("User created successfully");
+    }
+  }, [data]);
 
   return (
     <Layout canGoBack>
@@ -23,7 +53,10 @@ const Signin: NextPage = () => {
         <h2 className="text-3xl font-bold p-5">Signin</h2>
 
         <div className="flex justify-center items-center h-full">
-          <form onSubmit={handleSubmit(onValid)} className="border-2 border-slate-300 border-opacity-20 bg-slate-400 bg-opacity-20 p-10 rounded-md">
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="border-2 border-slate-300 border-opacity-20 bg-slate-400 bg-opacity-20 p-10 rounded-md"
+          >
             <div className="mb-6">
               <label
                 htmlFor="nickname"
@@ -110,12 +143,24 @@ const Signin: NextPage = () => {
                 .
               </label>
             </div>
-            <button
-              type="submit"
-              className="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Sign In
-            </button>
+            <div className="mt-5">
+              {formErrors?.password && (
+                <div className="text-red-500">
+                  {formErrors.password?.message}
+                </div>
+              )}
+              {formErrors?.agreement && (
+                <div className="text-red-500">
+                  {formErrors.agreement?.message}
+                </div>
+              )}
+              <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                {loading ? "Signing in ..." : "Sign In"}
+              </button>
+            </div>
           </form>
         </div>
       </>

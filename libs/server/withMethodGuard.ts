@@ -16,13 +16,14 @@ export default function withMethodGuard({
   methods,
   handler
 }: HandlerArgs) {
-  return function (
+  return async function (
     req: NextApiRequest,
     res: NextApiResponse
   ) {
     if(req.method && !methods.includes(req.method as any)) {
       res.status(405).json({ok: false, message: 'Method is not allowed.'});
     }
+
     try {
       handler(req, res);
     } catch (e) {
