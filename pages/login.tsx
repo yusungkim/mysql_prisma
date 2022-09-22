@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { LoginResponse } from "@api/users/login";
 import useMutation from "@libs/client/useMutation";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface LoginFormData {
   email: string;
@@ -11,6 +12,7 @@ interface LoginFormData {
 }
 
 const Login: NextPage = (props) => {
+  const router = useRouter()
   const { handleSubmit, register } = useForm<LoginFormData>();
   const [mutator, { data, loading, error }] = useMutation<
     LoginFormData,
@@ -25,9 +27,10 @@ const Login: NextPage = (props) => {
 
   useEffect(() => {
     if (data && data.ok) {
-      console.log("User logged in ", data.userId);
+      console.log("User logged in ");
+      router.push("/")
     }
-  }, [data]);
+  }, [data, router]);
 
   console.log("data: ", data);
   console.log("error: ", error);

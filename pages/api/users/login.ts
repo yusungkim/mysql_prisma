@@ -2,11 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import withMethodGuard from "@libs/server/withMethodGuard";
 import bcrypt from "bcrypt";
+import { withApiSession } from "@libs/server/withSession";
 
 export type LoginResponse = {
   ok: boolean;
   message?: string;
-  userId?: number;
 };
 
 async function handler(
@@ -30,13 +30,22 @@ async function handler(
   if (user) {
     const authenticated = bcrypt.compareSync(password, user.password);
     if (authenticated) {
-      res.status(200).json({ ok: true, userId: user.id });
+      req.session.user = {
+        id: user.id,
+        admin: false,
+      };
+      await req.session.save();
+      res.status(200).json({ ok: true });
     } else {
-      res.status(400).json({ ok: false, message: "Email or Password is not correct." });
+      res
+        .status(400)
+        .json({ ok: false, message: "Email or Password is not correct." });
     }
   } else {
-    res.status(400).json({ ok: false, message: "Email or Password is not correct." });
+    res
+      .status(400)
+      .json({ ok: false, message: "Email or Password is not correct." });
   }
 }
 
-export default withMethodGuard({ methods: ["POST"], handler });
+export default withApiSession(withMethodGuard({ methods: ["POST"], handler }));

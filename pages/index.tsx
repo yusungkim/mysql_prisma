@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
-import Link from "next/link";
 
 const Home: NextPage = (props) => {
   return (
@@ -16,6 +15,7 @@ const Home: NextPage = (props) => {
           <li><input type="checkbox" defaultChecked /> Register form</li>
           <li><input type="checkbox" defaultChecked /> Login form</li>
           <li><input type="checkbox" /> Login & Session</li>
+          <li><input type="checkbox" /> Logout</li>
           <li><input type="checkbox" /> useUser</li>
         </ul>
       </>
