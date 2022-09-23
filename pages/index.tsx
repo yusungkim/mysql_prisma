@@ -11,11 +11,11 @@ const Home: NextPage = (props) => {
           <li><input type="checkbox" defaultChecked /> Login page UI</li>
           <li><input type="checkbox" defaultChecked /> API: signin</li>
           <li><input type="checkbox" defaultChecked /> API: login</li>
-          <li><input type="checkbox" /> API: me (verify)</li>
+          <li><input type="checkbox" defaultChecked /> API: me (verify)</li>
           <li><input type="checkbox" defaultChecked /> Register form</li>
           <li><input type="checkbox" defaultChecked /> Login form</li>
-          <li><input type="checkbox" /> Login & Session</li>
-          <li><input type="checkbox" /> Logout</li>
+          <li><input type="checkbox" defaultChecked /> Login & Session</li>
+          <li><input type="checkbox" defaultChecked /> Logout</li>
           <li><input type="checkbox" /> useUser</li>
         </ul>
       </>

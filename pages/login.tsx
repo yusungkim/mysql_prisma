@@ -5,6 +5,7 @@ import { LoginResponse } from "@api/users/login";
 import useMutation from "@libs/client/useMutation";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Button from "@components/button";
 
 interface LoginFormData {
   email: string;
@@ -81,12 +82,7 @@ const Login: NextPage = (props) => {
               {data && !data.ok && data.message && (
                 <p className="text-red-500 text-center">{data.message}</p>
               )}
-              <button
-                type="submit"
-                className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                {loading ? "Submitting ..." : "Login"}
-              </button>
+              <Button type="submit" loading={loading}><>{loading ? "Submitting ..." : "Login"}</></Button>
             </div>
           </form>
         </div>

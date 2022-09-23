@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import Logout from "./logout";
 
 interface LayoutProps {
   canGoBack?: boolean;
@@ -17,35 +18,42 @@ const Layout = ({
   const onClick = () => {
     router.back();
   };
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   return (
-    <div className="w-screen h-screen bg-theme-black text-theme-beige flex justify-center py-5">
-      {canGoBack ? (
-        <button onClick={onClick} className="absolute left-4">
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 19l-7-7 7-7"
-            ></path>
-          </svg>
-        </button>
-      ) : null}
-      <div className="max-w-screen-2xl w-full md:w-768 bg-black bg-opacity-90">
-        {haveMenu ? (
-          <div className="flex gap-5 justify-end p-5  bg-theme-orange font-bold">
-            <Link href="/login">Login</Link>
-            <Link href="/signin">Signin</Link>
-          </div>
+    <div className="relative">
+      <div className="w-screen h-screen bg-theme-black text-theme-beige flex justify-center py-5">
+        {canGoBack ? (
+          <button onClick={onClick} className="absolute left-4">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+          </button>
         ) : null}
-        {children}
+        <div className="max-w-screen-2xl w-full md:w-768 bg-black bg-opacity-90">
+          {haveMenu ? (
+            <div className="flex gap-5 justify-end p-5  bg-theme-orange font-bold">
+              <Link href="/login">Login</Link>
+              <Link href="/signin">Signin</Link>
+              <button onClick={() => setShowLogoutModal(true)}>Logout</button>
+            </div>
+          ) : null}
+          {children}
+        </div>
       </div>
+      {showLogoutModal && <Logout onClose={() => setShowLogoutModal(false)} />}
     </div>
   );
 };
