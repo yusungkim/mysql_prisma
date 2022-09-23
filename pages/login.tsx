@@ -14,14 +14,14 @@ interface LoginFormData {
 const Login: NextPage = (props) => {
   const router = useRouter()
   const { handleSubmit, register } = useForm<LoginFormData>();
-  const [mutator, { data, loading, error }] = useMutation<
+  const [login, { data, loading, error }] = useMutation<
     LoginFormData,
     LoginResponse
   >("/api/users/login");
 
   const onValid = (formData: LoginFormData) => {
     if (!loading) {
-      mutator(formData);
+      login(formData);
     }
   };
 

@@ -5,10 +5,13 @@ declare module "iron-session" {
   interface IronSessionData {
     user?: {
       id: number;
-      admin?: boolean;
+      token: string;
+      admin: boolean;
     };
   }
 }
+
+const ttl = process.env.SESSION_TTL_IN_SEC ? parseInt(process.env.SESSION_TTL_IN_SEC) : 60 * 60;
 
 const sessionConfigs = {
   cookieName: process.env.SESSION_NAME || "mysql_prisma",
@@ -17,7 +20,7 @@ const sessionConfigs = {
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },
-  ttl: process.env.SESSION_TTL_IN_SEC ||  60 * 60,
+  ttl
 }
 
 export function withApiSession(handler: NextApiHandler) {

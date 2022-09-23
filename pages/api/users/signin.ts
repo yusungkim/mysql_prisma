@@ -32,8 +32,6 @@ async function handler(
   } else {
     const saltRounds = Number.parseInt(process.env.PASSWORD_SALT_ROUND || "10")
     const passwordHash = bcrypt.hashSync(password, saltRounds);
-    console.log("process.env.PASSWORD_SALT_ROUND! ", saltRounds);
-    console.log("passwordHash ", passwordHash);
     const user = await client.user.create({
       data: {
         email,

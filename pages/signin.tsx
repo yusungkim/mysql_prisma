@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import { SigninResponse } from "@api/users/signin";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface SigninFormData {
   nickname?: string;
@@ -14,6 +15,7 @@ interface SigninFormData {
 }
 
 const Signin: NextPage = (props) => {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -44,8 +46,9 @@ const Signin: NextPage = (props) => {
   useEffect(() => {
     if (data && data.ok) {
       console.log("User created successfully");
+      router.replace("/login")
     }
-  }, [data]);
+  }, [data, router]);
 
   return (
     <Layout canGoBack>
