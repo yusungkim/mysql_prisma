@@ -3,18 +3,20 @@ import withMethodGuard from "@libs/server/withMethodGuard";
 import { withApiSession } from "@libs/server/withSession";
 import { sign, verify } from "@libs/server/jwt";
 
-export type VerificationResponse = {
+export type VerifiedUserResponse = {
   ok: boolean;
   user?: {
+    id: number;
     email: string;
     nickname: string | null;
+    admin: boolean;
   };
   message?: string;
 };
 
 async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<VerificationResponse>
+  res: NextApiResponse<VerifiedUserResponse>
 ) {
   const user = req.session.user;
 
@@ -32,7 +34,6 @@ async function handler(
   if (authenticated.ok && authenticated.userInfo?.userId === id) {
     // renew token and session
     const user = authenticated.userInfo;
-    // userId includes in session but not in the api response.
     req.session.user = {
       id,
       token: sign(user), // reissue token
@@ -40,7 +41,15 @@ async function handler(
     };
     await req.session.save();
 
-    res.status(200).json({ ok: true, user: {email: user.email, nickname: user.nickname || null}});
+    res.status(200).json({
+      ok: true,
+      user: {
+        id: user.userId,
+        email: user.email,
+        nickname: user.nickname || null,
+        admin: false,
+      },
+    });
   } else {
     res.status(400).json({ ok: false, message: "Please Log in." });
   }

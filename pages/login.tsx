@@ -39,7 +39,7 @@ const Login: NextPage = (props) => {
   return (
     <Layout canGoBack>
       <>
-        <h2 className="text-3xl font-bold p-5">Login</h2>
+        <h1>Login</h1>
 
         <div className="flex justify-center items-center h-full">
           <form
