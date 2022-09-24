@@ -30,17 +30,13 @@ async function handler(
     if (authenticated) {
       // issue jwt, which does not require db access
       const token = sign({
-        userId: user.id,
-        email: user.email,
+        uuid: user.uuid,
         nickname: user.nickname,
       });
       // session (in cookie) save
-      req.session.user = {
-        id: user.id,
-        token: token,
-        admin: false,
-      };
+      req.session.token = token;
       await req.session.save();
+
       res.status(200).json({ ok: true, token });
     } else {
       res

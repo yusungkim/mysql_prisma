@@ -3,11 +3,7 @@ import { NextApiHandler } from "next";
 
 declare module "iron-session" {
   interface IronSessionData {
-    user?: {
-      id: number;
-      token: string;
-      admin: boolean;
-    };
+    token: string;
   }
 }
 

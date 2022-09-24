@@ -1,32 +1,31 @@
 const jwt = require("jsonwebtoken");
-const Cryptr = require("cryptr");
+// const Cryptr = require("cryptr");
 
 const secret = process.env.JWT_SECRET; // for jwt create / verify
-const cipherKey = process.env.JWT_CIPHER_SECRET; // for encrypt / decrypt
-const cryptr = new Cryptr(cipherKey);
+// const cipherKey = process.env.JWT_CIPHER_SECRET; // for encrypt / decrypt
+// const cryptr = new Cryptr(cipherKey);
 
 export interface TokenInfo {
-  userId: number;
-  nickname?: string | null;
-  email: string;
+  uuid: string;
+  nickname: string | null;
 }
 
 interface JwtReturnType {
   ok: boolean;
-  userInfo?: TokenInfo;
+  user?: TokenInfo;
 }
 
-export function sign(userInfo: TokenInfo): string {
+export function sign(user: TokenInfo): string {
   // encrypt for futher security
-  const encryptedUserInfo = cryptr.encrypt(JSON.stringify(userInfo));
+  // const encryptedUser = cryptr.encrypt(JSON.stringify(user));
 
   // create token
   const token = jwt.sign(
     {
-      data: { encryptedUserInfo },
+      data: { user },
     },
     secret,
-    { expiresIn: "24h" }
+    { expiresIn: "1h" }
   );
   return token;
 }
@@ -34,12 +33,12 @@ export function sign(userInfo: TokenInfo): string {
 export function verify(token: string): JwtReturnType {
   try {
     const {
-      data: { encryptedUserInfo },
+      data: { user },
     } = jwt.verify(token, secret);
-    const userInfo = JSON.parse(cryptr.decrypt(encryptedUserInfo));
+    // const user = JSON.parse(cryptr.decrypt(encryptedUserInfo)) as TokenInfo;
     return {
       ok: true,
-      userInfo,
+      user,
     };
   } catch (err) {
     console.log(err);
